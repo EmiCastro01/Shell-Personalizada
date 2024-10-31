@@ -16,10 +16,11 @@ void run_shell(run_mode_struct_t run_mode)
     char line[MAX_LINE_COMMAND];    // command line
     char *args[MAX_LINE_COMMAND / 2 + 1];    // arguments (0 is the command) //should be a pointer because strtok returns a pointer
 
+
     FILE *input = stdin;
     if (run_mode.mode == BATCH_MODE)
     {
-        input = fopen(run_mode.argv[1], "r");
+        input = fopen(run_mode.argument, "r");
         if (input == NULL)
         {
             perror("Error opening batch file");
@@ -32,7 +33,7 @@ void run_shell(run_mode_struct_t run_mode)
         if (run_mode.mode == INTERACTIVE_MODE)
         {
             printf("%s%s$", HOST_NAME, pwd);
-            if (!fgets(line, MAX_LINE_COMMAND, stdin)) break;
+            if (!fgets(line, MAX_LINE_COMMAND, input)) break;
         }
         else if (run_mode.mode == BATCH_MODE)
         {
@@ -56,10 +57,7 @@ void run_shell(run_mode_struct_t run_mode)
             run_cmd(cmd, args);
         }
 
-        if (run_mode.mode == BATCH_MODE)
-        {
-            break; // Exit after processing one command in batch mode
-        }
+      
     }
 
     if (run_mode.mode == BATCH_MODE)
@@ -86,6 +84,7 @@ cmd_t get_cmd(char **args)
 
 void run_cmd(cmd_t cmd, char **args)
 {
+  bg_mode_t background = check_bg(args);
     switch (cmd)
     {
     case QUIT:
@@ -173,7 +172,15 @@ void run_cmd(cmd_t cmd, char **args)
         }
         else
         {
-            waitpid(pid, NULL, 0);
+          if(background == MAIN_MODE){
+
+              waitpid(pid, NULL, 0);
+          }
+          else 
+          {
+            printf("[%d]\n", pid);
+            printf("\n");
+          }
         }
         break;
     }

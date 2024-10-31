@@ -55,5 +55,21 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false
+  "C_Cpp_Runner.msvcSecureNoWarnings": false,
+  "files.associations": {
+    "*.rmd": "markdown",
+    "stdbool.h": "c",
+    "r_u_okmessage.h": "c",
+    "consolestates.h": "c",
+    "errormessage.h": "c",
+    "send.h": "c",
+    "lpc_types.h": "c",
+    "lpc17xx_nvic.h": "c",
+    "expose_metrics.h": "c",
+    "metrics.h": "c",
+    "unistd.h": "c",
+    "string.h": "c",
+    "stdio.h": "c",
+    "stdlib.h": "c"
+  }
 }

@@ -6,10 +6,26 @@
 #define OCTAL_CLEAR "\033[H\033[J"
 
 /**
- * @brief Represent the mode of shell
+ * @brief 
  * 
  */
 typedef enum
+{
+  MAIN_MODE,
+  BACKGROUND_MODE,
+} bg_mode_t;
+
+/**
+ * @brief 
+ * 
+ */
+bg_mode_t check_bg(char** args);
+
+/**
+ * @brief Represent the mode of shell
+ * 
+ */
+typedef enum 
 {
   INTERACTIVE_MODE,
   BATCH_MODE,
@@ -18,8 +34,7 @@ typedef enum
 typedef struct 
 {
   run_mode_t mode;
-  char **argv; // Cambiado a char ** para almacenar el array de argumentos
-  int argc;
+  char *argument; 
 } run_mode_struct_t;
 
 typedef enum
@@ -57,4 +72,4 @@ void run_cmd(cmd_t cmd, char **args);
  * @brief Check if the arguments are not null
  * 
  */
-run_mode_struct_t check_args(int argc, char *argv[]);
+run_mode_struct_t check_mode(int argc, char *argv[]);
