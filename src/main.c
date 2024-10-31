@@ -3,6 +3,7 @@
 #include "shell.h"
 #include "util.c"
 
+
 int main(int argc, char *argv[])
 {
     run_shell(check_mode(argc, argv));
@@ -13,4 +14,4 @@ int main(int argc, char *argv[])
 
 
 // Arreglar el tema del background mode. Funciona, pero no como piden
-
+// Terminar el punto 6

@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,24 +7,11 @@
 #include <signal.h>
 #include "shell.h"
 
+
+
 char *pwd = NULL;
 char *oldpwd = NULL; //initialize the environment variables
 
-
-void sign_int_handler(int signal)
-{
-    printf("YOu pushed Ctrl+C\n");
-    fflush(stdout);
-    exit(EXIT_SUCCESS);
-}
-void sign_quit_handler(int signal)
-{
-    printf("YOu pushed Ctrl+\\");
-}
-void sign_stop_handler(int signal)
-{
-    printf("YOu pushed Ctrl+Z");
-}
 void run_shell(run_mode_struct_t run_mode)
 {
     config_signals_handlers();
@@ -32,7 +20,6 @@ void run_shell(run_mode_struct_t run_mode)
     cmd_t cmd;          // command to be executed
     char line[MAX_LINE_COMMAND];    // command line
     char *args[MAX_LINE_COMMAND / 2 + 1];    // arguments (0 is the command) //should be a pointer because strtok returns a pointer
-
 
     FILE *input = stdin;
     if (run_mode.mode == BATCH_MODE)
@@ -73,8 +60,6 @@ void run_shell(run_mode_struct_t run_mode)
             cmd = get_cmd(args);
             run_cmd(cmd, args);
         }
-
-      
     }
 
     if (run_mode.mode == BATCH_MODE)
@@ -101,7 +86,8 @@ cmd_t get_cmd(char **args)
 
 void run_cmd(cmd_t cmd, char **args)
 {
-  bg_mode_t background = check_bg(args);
+    bg_mode_t background = check_bg(args);
+
     switch (cmd)
     {
     case QUIT:
@@ -189,15 +175,17 @@ void run_cmd(cmd_t cmd, char **args)
         }
         else
         {
-          if(background == MAIN_MODE){
-
-              waitpid(pid, NULL, 0);
-          }
-          else 
-          {
-            printf("[%d]\n", pid);
-            printf("\n");
-          }
+            if (background == MAIN_MODE)
+            {
+                foreground_pid = pid; // Set the foreground process PID
+                waitpid(pid, NULL, 0); // Wait for the child process to finish if not running in background
+                foreground_pid = -1; // Reset the foreground process PID
+            }
+            else
+            {
+                printf("Process running in background with PID %d\n", pid);
+                printf("\n"); // Print a new line to ensure the prompt appears correctly
+            }
         }
         break;
     }

@@ -5,6 +5,9 @@
 
 #define FALSE 0
 #define TRUE 1
+
+int foreground_pid = -1; // Variable global para almacenar el PID del proceso en primer plano
+
 run_mode_struct_t check_mode(int argc, char *argv[])
 {
     run_mode_struct_t run_mode;
@@ -45,6 +48,30 @@ bg_mode_t check_bg(char **args)
     arg_index++;
   }
   return background;
+}
+
+void sign_int_handler(int signal)
+{
+    if (foreground_pid > 0)
+    {
+        kill(foreground_pid, SIGINT);
+    }
+}
+
+void sign_quit_handler(int signal)
+{
+    if (foreground_pid > 0)
+    {
+        kill(foreground_pid, SIGQUIT);
+    }
+}
+
+void sign_stop_handler(int signal)
+{
+    if (foreground_pid > 0)
+    {
+        kill(foreground_pid, SIGTSTP);
+    }
 }
 
 void config_signals_handlers()

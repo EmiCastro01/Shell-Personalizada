@@ -5,6 +5,7 @@
 #define MAX_LINE_COMMAND 256
 #define OCTAL_CLEAR "\033[H\033[J"
 
+
 /**
  * @brief 
  * 
@@ -73,3 +74,28 @@ void run_cmd(cmd_t cmd, char **args);
  * 
  */
 run_mode_struct_t check_mode(int argc, char *argv[]);
+
+/**
+ * @brief 
+ * 
+ */
+void config_signals_handlers(void);
+/**
+ * @brief 
+ * 
+ */
+void sign_int_handler(int signal);
+
+/**
+ * @brief 
+ * 
+ */
+void sign_quit_handler(int signal);
+
+/**
+ * @brief 
+ * 
+ */
+void sign_stop_handler(int signal);
+
+extern int foreground_pid;
