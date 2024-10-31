@@ -3,13 +3,30 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
 #include "shell.h"
 
 char *pwd = NULL;
 char *oldpwd = NULL; //initialize the environment variables
 
+
+void sign_int_handler(int signal)
+{
+    printf("YOu pushed Ctrl+C\n");
+    fflush(stdout);
+    exit(EXIT_SUCCESS);
+}
+void sign_quit_handler(int signal)
+{
+    printf("YOu pushed Ctrl+\\");
+}
+void sign_stop_handler(int signal)
+{
+    printf("YOu pushed Ctrl+Z");
+}
 void run_shell(run_mode_struct_t run_mode)
 {
+    config_signals_handlers();
     pwd = getenv("PWD");
     oldpwd = getenv("OLDPWD");
     cmd_t cmd;          // command to be executed

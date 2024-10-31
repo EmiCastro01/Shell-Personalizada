@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <signal.h>
 #include "shell.h"
 
 #define FALSE 0
@@ -44,4 +45,11 @@ bg_mode_t check_bg(char **args)
     arg_index++;
   }
   return background;
+}
+
+void config_signals_handlers()
+{
+  signal(SIGINT, sign_int_handler);
+  signal(SIGQUIT, sign_quit_handler);
+  signal(SIGTSTP, sign_stop_handler);
 }

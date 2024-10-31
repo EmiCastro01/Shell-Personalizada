@@ -12,4 +12,5 @@ int main(int argc, char *argv[])
 
 
 
+// Arreglar el tema del background mode. Funciona, pero no como piden
 
