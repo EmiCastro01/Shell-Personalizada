@@ -120,6 +120,6 @@ void execute_process(char **args, int input_fd, int output_fd, bg_mode_t bg_mode
  * @brief 
  * 
  */
-void check_and_print_monitor_status(void);
+void check_and_print_monitor_status(pid_t monitor_pid);
 
 extern int foreground_pid;

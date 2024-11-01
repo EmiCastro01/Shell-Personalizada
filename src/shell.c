@@ -215,10 +215,11 @@ void run_cmd(cmd_t cmd, char **args)
         case STOP_MONITOR:
             printf("Stopping monitor...\n");
             kill(monitor_pid, SIGINT);
+            monitor_pid = -1;
             break;
         case STATUS_MONITOR:
             printf("Checking monitor status...\n");
-            check_and_print_monitor_status();
+            check_and_print_monitor_status(monitor_pid);
             break;
         default:
             break;

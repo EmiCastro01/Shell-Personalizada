@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <signal.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include "shell.h"
 
 #define FALSE 0
@@ -79,4 +81,16 @@ void config_signals_handlers()
   signal(SIGINT, sign_int_handler);
   signal(SIGQUIT, sign_quit_handler);
   signal(SIGTSTP, sign_stop_handler);
+}
+
+void check_and_print_monitor_status(pid_t monitor_pid)
+{
+  if (monitor_pid == -1)
+  {
+    printf("Monitor is not running\n");
+  }
+  else
+  {
+    printf("Monitor is running with PID %d\n", monitor_pid);
+  }
 }
