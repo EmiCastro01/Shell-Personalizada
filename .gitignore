@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 
+monitor
 # Object files
 *.o
 *.ko

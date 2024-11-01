@@ -5,6 +5,8 @@
 #define MAX_LINE_COMMAND 256
 #define OCTAL_CLEAR "\033[H\033[J"
 
+#define MONITOR_PATH "../monitor/build/monitoring_project"
+
 
 /**
  * @brief 
@@ -38,6 +40,10 @@ typedef struct
   char *argument; 
 } run_mode_struct_t;
 
+/**
+ * @brief 
+ * 
+ */
 typedef enum
 {
   QUIT,
@@ -45,6 +51,9 @@ typedef enum
   PWD,
   ECHO,
   CLR,
+  START_MONITOR,
+  STOP_MONITOR,
+  STATUS_MONITOR,
   EXTERNAL,
 } cmd_t;
 
@@ -97,5 +106,20 @@ void sign_quit_handler(int signal);
  * 
  */
 void sign_stop_handler(int signal);
+
+/**
+ * @brief takes info from the args and executes the process in background or main mode
+ * @param args 
+ * @param input_fd
+ * @param output_fd 
+ * @param is_background represents if the process is in background
+ */
+void execute_process(char **args, int input_fd, int output_fd, bg_mode_t bg_mode);
+
+/**
+ * @brief 
+ * 
+ */
+void check_and_print_monitor_status(void);
 
 extern int foreground_pid;
