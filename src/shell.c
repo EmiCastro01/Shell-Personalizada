@@ -9,7 +9,7 @@
 
 char *pwd = NULL;
 char *oldpwd = NULL; //initialize the environment variables
-
+pid_t monitor_pid = -1;
 void run_shell(run_mode_struct_t run_mode)
 {
     config_signals_handlers();
@@ -78,11 +78,17 @@ cmd_t get_cmd(char **args)
         return ECHO;
     else if (strcmp(args[0], "clr") == 0)
         return CLR;
+    else if (strcmp(args[0], "start_monitor") == 0)
+        return START_MONITOR;
+    else if (strcmp(args[0], "stop_monitor") == 0)
+        return STOP_MONITOR;
+    else if (strcmp(args[0], "status_monitor") == 0)
+        return STATUS_MONITOR;
     else
         return EXTERNAL;    // external program
 }
 
-void execute_command(char **args, int input_fd, int output_fd, int is_background)
+void execute_process(char **args, int input_fd, int output_fd, bg_mode_t bg_mode)
 {
     pid_t pid = fork();
     if (pid == 0)  // child process
@@ -109,7 +115,7 @@ void execute_command(char **args, int input_fd, int output_fd, int is_background
     }
     else
     {
-        if (!is_background)
+        if (bg_mode == MAIN_MODE)
         {
             foreground_pid = pid; // Set the foreground process PID
             waitpid(pid, NULL, 0); // Wait for the child process to finish if not running in background
@@ -118,6 +124,8 @@ void execute_command(char **args, int input_fd, int output_fd, int is_background
         else
         {
             printf("Process running in background with PID %d\n", pid);
+            if(args[0] == MONITOR_PATH) 
+            monitor_pid = pid;
             printf("\n"); // Print a new line to ensure the prompt appears correctly
         }
     }
@@ -199,6 +207,19 @@ void run_cmd(cmd_t cmd, char **args)
             printf("Clearing\n");
             printf("\033[H\033[J");
             break;
+        case START_MONITOR:
+            printf("Starting monitor...\n");
+            args[0] = MONITOR_PATH; 
+            execute_process(args, STDIN_FILENO, STDOUT_FILENO, BACKGROUND_MODE);
+            break;
+        case STOP_MONITOR:
+            printf("Stopping monitor...\n");
+            kill(monitor_pid, SIGINT);
+            break;
+        case STATUS_MONITOR:
+            printf("Checking monitor status...\n");
+            check_and_print_monitor_status();
+            break;
         default:
             break;
         }
@@ -211,7 +232,7 @@ void run_cmd(cmd_t cmd, char **args)
         int output_fd = STDOUT_FILENO;
         int i = 0;
         char *command[MAX_LINE_COMMAND / 2 + 1];
-        int is_background = (background == BACKGROUND_MODE);
+        bg_mode_t bg_mode = BACKGROUND_MODE;
 
         while (args[i] != NULL)
         {
@@ -225,7 +246,7 @@ void run_cmd(cmd_t cmd, char **args)
             if (args[i] != NULL && strcmp(args[i], "|") == 0)
             {
                 pipe(pipe_fds);
-                execute_command(command, input_fd, pipe_fds[1], is_background);
+                execute_process(command, input_fd, pipe_fds[1], bg_mode);
                 close(pipe_fds[1]);
                 input_fd = pipe_fds[0];
                 i++;
@@ -239,7 +260,7 @@ void run_cmd(cmd_t cmd, char **args)
                     return;
                 }
                 else {
-                  execute_command(command, input_fd, output_fd, is_background);
+                  execute_process(command, input_fd, output_fd, bg_mode);
                 }
                 i++;
             }
@@ -252,13 +273,13 @@ void run_cmd(cmd_t cmd, char **args)
                     return;
                 }
                 else {
-                  execute_command(command, input_fd, output_fd, is_background);
+                  execute_process(command, input_fd, output_fd, bg_mode);
                 }
                 i++;
             }
             else
             {
-                execute_command(command, input_fd, output_fd, is_background);
+                execute_process(command, input_fd, output_fd, bg_mode);
                 break;
             }
         }

@@ -6,7 +6,7 @@
 #define FALSE 0
 #define TRUE 1
 
-int foreground_pid = -1; // Variable global para almacenar el PID del proceso en primer plano
+int foreground_pid = -1; // global variable to save the foreground process PID
 
 run_mode_struct_t check_mode(int argc, char *argv[])
 {
