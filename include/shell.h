@@ -5,7 +5,7 @@
 #define MAX_LINE_COMMAND 256
 #define OCTAL_CLEAR "\033[H\033[J"
 
-#define MONITOR_PATH "../monitor/build/monitoring_project"
+#define MONITOR_PATH "monitor/metrics"
 
 
 /**
@@ -88,24 +88,24 @@ run_mode_struct_t check_mode(int argc, char *argv[]);
  * @brief 
  * 
  */
-void config_signals_handlers(void);
+extern void config_signals_handlers(void);
 /**
  * @brief 
  * 
  */
-void sign_int_handler(int signal);
+extern void sign_int_handler(int signal);
 
 /**
  * @brief 
  * 
  */
-void sign_quit_handler(int signal);
+extern void sign_quit_handler(int signal);
 
 /**
  * @brief 
  * 
  */
-void sign_stop_handler(int signal);
+extern void sign_stop_handler(int signal);
 
 /**
  * @brief takes info from the args and executes the process in background or main mode
@@ -114,12 +114,12 @@ void sign_stop_handler(int signal);
  * @param output_fd 
  * @param is_background represents if the process is in background
  */
-void execute_process(char **args, int input_fd, int output_fd, bg_mode_t bg_mode);
+extern void execute_process(char **args, int input_fd, int output_fd, bg_mode_t bg_mode);
 
 /**
  * @brief 
  * 
  */
-void check_and_print_monitor_status(pid_t monitor_pid);
+extern void check_and_print_monitor_status(pid_t monitor_pid);
 
 extern int foreground_pid;

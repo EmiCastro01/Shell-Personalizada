@@ -106,6 +106,7 @@ void execute_process(char **args, int input_fd, int output_fd, bg_mode_t bg_mode
         if (execvp(args[0], args) == -1)
         {
             perror("Error");
+            printf(getenv("PATH"));
             exit(EXIT_FAILURE);
         }
     }
@@ -117,8 +118,8 @@ void execute_process(char **args, int input_fd, int output_fd, bg_mode_t bg_mode
     {
         if (bg_mode == MAIN_MODE)
         {
-            foreground_pid = pid; 
-            waitpid(pid, NULL, 0); 
+            foreground_pid = pid; // Set the foreground process PID
+            waitpid(pid, NULL, 0); // Wait for the child process to finish if not running in background
             foreground_pid = -1; 
         }
         else

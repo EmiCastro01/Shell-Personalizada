@@ -1,7 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "shell.h"
-#include "util.c"
 
 
 int main(int argc, char *argv[])
