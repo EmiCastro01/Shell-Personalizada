@@ -5,7 +5,7 @@
 #define MAX_LINE_COMMAND 256
 #define OCTAL_CLEAR "\033[H\033[J"
 
-#define MONITOR_PATH "monitor/metrics"
+#define MONITOR_PATH "../monitor/metrics"
 
 
 /**

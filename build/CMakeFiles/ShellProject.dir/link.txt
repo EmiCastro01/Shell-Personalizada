@@ -1,0 +1,1 @@
+/usr/bin/cc -m64 -O3 -DNDEBUG -m64 CMakeFiles/ShellProject.dir/src/main.c.o CMakeFiles/ShellProject.dir/src/shell.c.o CMakeFiles/ShellProject.dir/src/util.c.o -o ShellProject   -L/home/emi/.conan2/p/b/cjson481f8e4430216/p/lib  -Wl,-rpath,/home/emi/.conan2/p/b/cjson481f8e4430216/p/lib /home/emi/.conan2/p/b/cjson481f8e4430216/p/lib/libcjson.a -lm 
