@@ -117,16 +117,16 @@ void execute_process(char **args, int input_fd, int output_fd, bg_mode_t bg_mode
     {
         if (bg_mode == MAIN_MODE)
         {
-            foreground_pid = pid; // Set the foreground process PID
-            waitpid(pid, NULL, 0); // Wait for the child process to finish if not running in background
-            foreground_pid = -1; // Reset the foreground process PID
+            foreground_pid = pid; 
+            waitpid(pid, NULL, 0); 
+            foreground_pid = -1; 
         }
         else
         {
             printf("Process running in background with PID %d\n", pid);
             if(args[0] == MONITOR_PATH) 
             monitor_pid = pid;
-            printf("\n"); // Print a new line to ensure the prompt appears correctly
+            printf("\n"); 
         }
     }
 }
