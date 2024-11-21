@@ -7,6 +7,10 @@
 
 #define MONITOR_PATH "../monitor/metrics"
 
+typedef struct {
+  int sampling_interval;
+  char **metrics;
+} config_t;
 
 /**
  * @brief 
@@ -61,7 +65,7 @@ typedef enum
  * @brief Executes the shell process
  * 
  */
-void run_shell(run_mode_struct_t mode);
+void run_shell(run_mode_struct_t mode, config_t configurations);
 
 /**
  * @brief Get the program to be executed
@@ -76,7 +80,7 @@ cmd_t get_cmd(char **args);
  * @param cmd 
  * @param args 
  */
-void run_cmd(cmd_t cmd, char **args);
+void run_cmd(cmd_t cmd, char **args, config_t configurations);
 
 /**
  * @brief Check if the arguments are not null
@@ -122,4 +126,11 @@ extern void execute_process(char **args, int input_fd, int output_fd, bg_mode_t 
  */
 extern void check_and_print_monitor_status(pid_t monitor_pid);
 
+/**
+ * @brief loads the configuration from the config.json file 
+ * 
+ */
+void load_config_json(const char *filename, config_t *configurations);
+
 extern int foreground_pid;
+

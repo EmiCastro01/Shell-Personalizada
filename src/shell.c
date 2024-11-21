@@ -10,7 +10,7 @@
 char *pwd = NULL;
 char *oldpwd = NULL; //initialize the environment variables
 pid_t monitor_pid = -1;
-void run_shell(run_mode_struct_t run_mode)
+void run_shell(run_mode_struct_t run_mode, config_t configurations)
 {
     config_signals_handlers();
     pwd = getenv("PWD");
@@ -56,7 +56,7 @@ void run_shell(run_mode_struct_t run_mode)
         if (args[0] != NULL)   // args[0] is the command
         {
             cmd = get_cmd(args);
-            run_cmd(cmd, args);
+            run_cmd(cmd, args, configurations);
         }
     }
 
@@ -132,7 +132,7 @@ void execute_process(char **args, int input_fd, int output_fd, bg_mode_t bg_mode
     }
 }
 
-void run_cmd(cmd_t cmd, char **args)
+void run_cmd(cmd_t cmd, char **args, config_t configurations)
 {
     bg_mode_t background = check_bg(args);
 
@@ -211,6 +211,10 @@ void run_cmd(cmd_t cmd, char **args)
         case START_MONITOR:
             printf("Starting monitor...\n");
             args[0] = MONITOR_PATH; 
+            char sampling_interval_str[10];
+            snprintf(sampling_interval_str, sizeof(sampling_interval_str), "%d", configurations.sampling_interval);
+            args[1] = sampling_interval_str;
+            args[2] = NULL; 
             execute_process(args, STDIN_FILENO, STDOUT_FILENO, BACKGROUND_MODE);
             break;
         case STOP_MONITOR:

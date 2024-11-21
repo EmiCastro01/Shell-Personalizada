@@ -3,6 +3,8 @@
 
 CMakeFiles/ShellProject.dir/src/main.c.o
  /home/emi/Escritorio/FACU/OS1/tp/so-i-24-chp2-EmiCastro01/src/main.c
+ /home/emi/.conan2/p/b/cjson481f8e4430216/p/include/cjson/cJSON.h
+ /home/emi/Escritorio/FACU/OS1/tp/so-i-24-chp2-EmiCastro01/include/shell.h
  /usr/include/alloca.h
  /usr/include/endian.h
  /usr/include/features-time64.h
