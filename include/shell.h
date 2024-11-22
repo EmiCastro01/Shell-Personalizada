@@ -33,8 +33,17 @@
  */
 typedef struct
 {
+    /**
+     * @brief variable to store the sampling interval
+     */
     int sampling_interval;
+    /**
+     * @brief array of metrics
+     */
     char* metrics[MAX_METRICS];
+    /**
+     * @brief number of metrics
+     */
     int metrics_count;
 } config_t;
 
@@ -69,7 +78,13 @@ typedef enum
  */
 typedef struct
 {
+    /**
+     * @brief mode of the process
+     */
     run_mode_t mode;
+    /**
+     * @brief argument of the process
+     */
     char* argument;
 } run_mode_struct_t;
 
