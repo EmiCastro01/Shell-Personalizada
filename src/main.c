@@ -5,8 +5,8 @@
 /**
  * @brief Check the mode of the shell
  * Main function
- * @param argc 
- * @param argv 
+ * @param argc
+ * @param argv
  */
 int main(int argc, char* argv[])
 {

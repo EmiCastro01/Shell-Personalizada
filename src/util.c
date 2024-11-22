@@ -19,11 +19,11 @@
 int foreground_pid = -1; // global variable to save the foreground process PID
 
 /**
- * @brief returns the mode of the shell based on the arguments  
- * 
- * @param argc 
- * @param argv 
- * @return run_mode_struct_t 
+ * @brief returns the mode of the shell based on the arguments
+ *
+ * @param argc
+ * @param argv
+ * @return run_mode_struct_t
  */
 run_mode_struct_t check_mode(int argc, char* argv[])
 {
@@ -45,7 +45,7 @@ run_mode_struct_t check_mode(int argc, char* argv[])
 
 /**
  * @brief Check if process needs to run in background
- * 
+ *
  */
 bg_mode_t check_bg(char** args)
 {
@@ -72,8 +72,8 @@ bg_mode_t check_bg(char** args)
 }
 /**
  * @brief Signal handler for SIGINT
- * 
- * @param signal 
+ *
+ * @param signal
  */
 void sign_int_handler(int signal)
 {
@@ -84,8 +84,8 @@ void sign_int_handler(int signal)
 }
 /**
  * @brief Signal handler for SIGQUIT
- * 
- * @param signal 
+ *
+ * @param signal
  */
 void sign_quit_handler(int signal)
 {
@@ -96,8 +96,8 @@ void sign_quit_handler(int signal)
 }
 /**
  * @brief Signal handler for SIGTSTP
- * 
- * @param signal 
+ *
+ * @param signal
  */
 
 void sign_stop_handler(int signal)
@@ -109,7 +109,7 @@ void sign_stop_handler(int signal)
 }
 /**
  * @brief Signal handlers configuration
- * 
+ *
  */
 void config_signals_handlers()
 {
@@ -119,8 +119,8 @@ void config_signals_handlers()
 }
 /**
  * @brief Check and print the status of the monitor
- * 
- * @param monitor_pid 
+ *
+ * @param monitor_pid
  */
 void check_and_print_monitor_status(pid_t monitor_pid)
 {

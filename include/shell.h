@@ -65,7 +65,7 @@ typedef enum
 } run_mode_t;
 /**
  * @brief struct to store the mode and the argument
- * 
+ *
  */
 typedef struct
 {
@@ -123,7 +123,7 @@ int run_cmd(cmd_t cmd, char** args, config_t* configurations);
 run_mode_struct_t check_mode(int argc, char* argv[]);
 
 /**
- * @brief signal handlers configuration   
+ * @brief signal handlers configuration
  *
  */
 extern void config_signals_handlers(void);

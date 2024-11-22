@@ -23,8 +23,8 @@ pid_t monitor_pid = -1;
 /**
  * @brief Executes de shell system on the mode specified
  * and with the configurations passed
- * @param run_mode 
- * @param configurations 
+ * @param run_mode
+ * @param configurations
  */
 void run_shell(run_mode_struct_t run_mode, config_t configurations)
 {
@@ -91,16 +91,16 @@ void run_shell(run_mode_struct_t run_mode, config_t configurations)
 
 /**
  * @brief gets the command to be executed based on the args
- * 
- * @param args 
- * @return cmd_t 
+ *
+ * @param args
+ * @return cmd_t
  */
 cmd_t get_cmd(char** args)
 {
     if (strcmp(args[0], "quit") == 0)
     {
         return QUIT;
-    } 
+    }
     else if (strcmp(args[0], "cd") == 0)
     {
         return CD;
@@ -157,11 +157,11 @@ cmd_t get_cmd(char** args)
 
 /**
  * @brief Executes the process based on command passed.
- * 
- * @param args 
- * @param input_fd 
- * @param output_fd 
- * @param bg_mode 
+ *
+ * @param args
+ * @param input_fd
+ * @param output_fd
+ * @param bg_mode
  */
 void execute_process(char** args, int input_fd, int output_fd, bg_mode_t bg_mode)
 {
@@ -211,11 +211,11 @@ void execute_process(char** args, int input_fd, int output_fd, bg_mode_t bg_mode
 
 /**
  * @brief Analyze and calls execute_process based on command passed.
- * 
- * @param cmd 
- * @param args 
- * @param configurations 
- * @return int 
+ *
+ * @param cmd
+ * @param args
+ * @param configurations
+ * @return int
  */
 int run_cmd(cmd_t cmd, char** args, config_t* configurations)
 {
@@ -428,9 +428,9 @@ int run_cmd(cmd_t cmd, char** args, config_t* configurations)
 /**
  * @brief loads data from the config.json file
  * and stores it in the configurations struct
- * 
- * @param filename 
- * @param configurations 
+ *
+ * @param filename
+ * @param configurations
  */
 void load_config_json(const char* filename, config_t* configurations)
 {
@@ -488,10 +488,10 @@ void load_config_json(const char* filename, config_t* configurations)
 /**
  * @brief updates the config.json file with the new metrics
  * and the new metrics count
- * 
- * @param filename 
- * @param new_metrics 
- * @param new_metrics_count 
+ *
+ * @param filename
+ * @param new_metrics
+ * @param new_metrics_count
  */
 void update_config_json(const char* filename, char** new_metrics, int new_metrics_count)
 {
