@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <cjson/cJSON.h>
 #include "shell.h"
 
 char *pwd = NULL;
@@ -142,7 +143,7 @@ void execute_process(char **args, int input_fd, int output_fd, bg_mode_t bg_mode
     }
 }
 
-void run_cmd(cmd_t cmd, char **args, config_t configurations)
+int run_cmd(cmd_t cmd, char **args, config_t *configurations)
 {
     bg_mode_t background = check_bg(args);
 
@@ -158,12 +159,14 @@ void run_cmd(cmd_t cmd, char **args, config_t configurations)
             if (args[1] == NULL)
             {
                 printf("No directory specified\n");
+                return -1;
             }
             else if (strcmp(args[1], "-") == 0)
             {
                 if (oldpwd == NULL)
                 {
                     printf("No previous directory\n");
+                    return -1;
                 }
                 else
                 {
@@ -173,11 +176,13 @@ void run_cmd(cmd_t cmd, char **args, config_t configurations)
                     oldpwd = temp;
                     setenv("OLDPWD", pwd, 1);
                     setenv("PWD", oldpwd, 1);
+                    return 0;
                 }
             }
             else if (chdir(args[1]) == -1)
             {
                 printf("Directory not found\n");
+                return -1;
             }
             else
             {
@@ -187,23 +192,26 @@ void run_cmd(cmd_t cmd, char **args, config_t configurations)
                 if (pwd == NULL)
                 {
                     perror("getcwd");
+                    return -1;
                 }
                 else
                 {
                     setenv("OLDPWD", oldpwd, 1);
                     setenv("PWD", pwd, 1);
+                    return 0;
                 }
             }
             break;
         case PWD:
             getcwd(pwd, MAX_LINE_COMMAND);
             printf("%s%s%s", "You are in ", pwd, "\n");
-            break;
+            return 0;
         case ECHO:
             printf("Echoing\n");
             if (args[1] == NULL)
             {
                 printf("No arguments\n");
+                return -1;
             }
             else
             {
@@ -212,68 +220,69 @@ void run_cmd(cmd_t cmd, char **args, config_t configurations)
                     printf("%s%s", args[i], " ");
                 }
                 printf("\n");
+                return 0;
             }
             break;
         case CLR:
             printf("Clearing\n");
             printf("\033[H\033[J");
-            break;
-         case START_MONITOR:
+            return 0;
+        case START_MONITOR:
             printf("Starting monitor...\n");
             args[0] = MONITOR_PATH;
             char sampling_interval_str[10];
-            snprintf(sampling_interval_str, sizeof(sampling_interval_str), "%d", configurations.sampling_interval);
+            snprintf(sampling_interval_str, sizeof(sampling_interval_str), "%d", configurations->sampling_interval);
             args[1] = sampling_interval_str;
 
             // Añadir métricas como argumentos
             int i;
-            for (i = 0; i < configurations.metrics_count; i++) {
-                args[i + 2] = configurations.metrics[i];
+            for (i = 0; i < configurations->metrics_count; i++) {
+                args[i + 2] = configurations->metrics[i];
             }
             args[i + 2] = NULL; // Asegurarse de que la lista de argumentos termine con NULL
             execute_process(args, STDIN_FILENO, STDOUT_FILENO, BACKGROUND_MODE);
-            break;
+            return 0;
         case STOP_MONITOR:
             printf("Stopping monitor...\n");
             kill(monitor_pid, SIGINT);
             monitor_pid = -1;
-            break;
+            return 0;
         case STATUS_MONITOR:
             printf("Checking monitor status...\n");
             check_and_print_monitor_status(monitor_pid);
-            break;
+            return 0;
         case SHOW_CPU_USAGE:
-           printf("config json updated.\n");
+            printf("config json updated.\n");
             char *new_cpu_metric = "cpu_usage";
-            configurations.metrics[configurations.metrics_count] = new_cpu_metric;
-            update_config_json("../config.json", configurations.metrics, configurations.metrics_count + 1);
-            break;
+            configurations->metrics[configurations->metrics_count] = new_cpu_metric;
+            update_config_json("../config.json", configurations->metrics, configurations->metrics_count + 1);
+            return 0;
         case SHOW_MEM_USAGE:
             printf("config json updated.\n");
             char *new_mem_metric = "memory_usage";
-            configurations.metrics[configurations.metrics_count] = new_mem_metric;
-            update_config_json("../config.json", configurations.metrics, configurations.metrics_count + 1);
-            break;
+            configurations->metrics[configurations->metrics_count] = new_mem_metric;
+            update_config_json("../config.json", configurations->metrics, configurations->metrics_count + 1);
+            return 0;
         case SHOW_DISK_USAGE:
-           printf("config json updated.\n");
+            printf("config json updated.\n");
             char *new_IO_metric = "IO_time";
-            configurations.metrics[configurations.metrics_count] = new_IO_metric;
-            update_config_json("../config.json", configurations.metrics, configurations.metrics_count + 1);
-            break;  
+            configurations->metrics[configurations->metrics_count] = new_IO_metric;
+            update_config_json("../config.json", configurations->metrics, configurations->metrics_count + 1);
+            return 0;
         case SHOW_NET_USAGE:
             printf("config json updated.\n");
             char *new_tx_metric = "net_TX";
-            configurations.metrics[configurations.metrics_count] = new_tx_metric;
-            update_config_json("../config.json", configurations.metrics, configurations.metrics_count + 1);
-            break;
+            configurations->metrics[configurations->metrics_count] = new_tx_metric;
+            update_config_json("../config.json", configurations->metrics, configurations->metrics_count + 1);
+            return 0;
         case SHOW_PROC_NO:
             printf("config json updated.\n");
-            char *new_proc_metric = "processes";
-            configurations.metrics[configurations.metrics_count] = new_proc_metric;
-            update_config_json("../config.json", configurations.metrics, configurations.metrics_count + 1);
-            break;
+            char *new_proc_metric = "proccesses";
+            configurations->metrics[configurations->metrics_count] = new_proc_metric;
+            update_config_json("../config.json", configurations->metrics, configurations->metrics_count + 1);
+            return 0;
         default:
-            break;
+            return -1;
         }
     }
     else
@@ -309,7 +318,7 @@ void run_cmd(cmd_t cmd, char **args, config_t configurations)
                 if (output_fd == -1)
                 {
                     perror("Error opening file for redirection");
-                    return;
+                    return -1;
                 }
                 else {
                   execute_process(command, input_fd, output_fd, bg_mode);
@@ -322,7 +331,7 @@ void run_cmd(cmd_t cmd, char **args, config_t configurations)
                 if (input_fd == -1)
                 {
                     perror("Error opening file for redirection");
-                    return;
+                    return -1;
                 }
                 else {
                   execute_process(command, input_fd, output_fd, bg_mode);
@@ -336,4 +345,104 @@ void run_cmd(cmd_t cmd, char **args, config_t configurations)
             }
         }
     }
+            return 0;
+
+}
+
+void load_config_json(const char *filename, config_t *configurations)
+{
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Unable to open config file");
+        return;
+    }
+
+    fseek(file, 0, SEEK_END);
+    long length = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    char *data = (char *)malloc(length + 1);
+    fread(data, 1, length, file);
+    fclose(file);
+    data[length] = '\0';
+
+    cJSON *json = cJSON_Parse(data);
+    if (!json) {
+        printf("Error parsing JSON: %s\n", cJSON_GetErrorPtr());
+        free(data);
+        return;
+    }
+
+    cJSON *interval = cJSON_GetObjectItem(json, "sampling_interval");
+    cJSON *metrics = cJSON_GetObjectItem(json, "metrics");
+
+    if (cJSON_IsNumber(interval)) {
+        printf("Sampling interval: %d\n", interval->valueint);
+        configurations->sampling_interval = interval->valueint;
+    }
+
+    if (cJSON_IsArray(metrics)) {
+        int size = cJSON_GetArraySize(metrics);
+        configurations->metrics_count = size;
+        for (int i = 0; i < size; i++) {
+            cJSON *metric = cJSON_GetArrayItem(metrics, i);
+            if (cJSON_IsString(metric)) {
+                printf("Metric: %s\n", metric->valuestring);
+                configurations->metrics[i] = strdup(metric->valuestring);
+            }
+        }
+    }
+
+    cJSON_Delete(json);
+    free(data);
+}
+
+void update_config_json(const char *filename, char **new_metrics, int new_metrics_count)
+{
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Unable to open config file");
+        return;
+    }
+
+    fseek(file, 0, SEEK_END);
+    long length = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    char *data = (char *)malloc(length + 1);
+    fread(data, 1, length, file);
+    fclose(file);
+    data[length] = '\0';
+
+    cJSON *json = cJSON_Parse(data);
+    if (!json) {
+        printf("Error parsing JSON: %s\n", cJSON_GetErrorPtr());
+        free(data);
+        return;
+    }
+
+    cJSON *metrics = cJSON_GetObjectItem(json, "metrics");
+
+    if (cJSON_IsArray(metrics)) {
+        cJSON_DeleteItemFromObject(json, "metrics");
+        cJSON *new_metrics_array = cJSON_CreateArray();
+        for (int i = 0; i < new_metrics_count; i++) {
+            printf("New metric: %s\n", new_metrics[i]);
+            cJSON_AddItemToArray(new_metrics_array, cJSON_CreateString(new_metrics[i]));
+        }
+        cJSON_AddItemToObject(json, "metrics", new_metrics_array);
+    }
+
+    char *new_data = cJSON_Print(json);
+    file = fopen(filename, "w");
+    if (!file) {
+        perror("Unable to open config file");
+        return;
+    }
+    fprintf(file, "%s", new_data);
+    fclose(file);
+
+    cJSON_Delete(json);
+    free(data);
+    free(new_data);
 }

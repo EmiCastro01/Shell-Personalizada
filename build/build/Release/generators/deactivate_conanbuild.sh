@@ -1,1 +1,0 @@
-. "/home/emi/Escritorio/FACU/OS1/tp/so-i-24-chp2-EmiCastro01/build/build/Release/generators/deactivate_conanbuildenv-release-x86_64.sh"

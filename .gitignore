@@ -53,5 +53,8 @@ dkms.conf
 
 
 # Local files
-build/
-lib/
+build
+lib
+
+#testing
+test

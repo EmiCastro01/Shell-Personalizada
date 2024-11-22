@@ -12,7 +12,7 @@ include(CTest)
 
 #flags for compiler
 set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_FLAGS_DEBUG "-g3 -Wall -WConversion")
+set(CMAKE_C_FLAGS_DEBUG "-g -00 -Wall -WConversion")
 
 
 #include headers
@@ -39,6 +39,10 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} PRIVATE cjson::cjson)
 
+if(RUN_COVERAGE EQUAL 1)
+  message("run coverage")
+  add_subdirectory(test)
+endif()
 
 
 
