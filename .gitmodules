@@ -1,4 +1,4 @@
 [submodule "monitor"]
 	path = monitor
-	url = https://github.com/ICOMP-UNC/so-i-24-EmiCastro01.git
-	branch = development
+	url = https://github.com/EmiCastro01/Monitoring-System.git
+	branch = master
