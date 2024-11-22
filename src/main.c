@@ -61,6 +61,54 @@ void load_config_json(const char *filename, config_t *configurations)
     free(data);
 }
 
+void update_config_json(const char *filename, char **new_metrics, int new_metrics_count)
+{
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Unable to open config file");
+        return;
+    }
 
+    fseek(file, 0, SEEK_END);
+    long length = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    char *data = (char *)malloc(length + 1);
+    fread(data, 1, length, file);
+    fclose(file);
+    data[length] = '\0';
+
+    cJSON *json = cJSON_Parse(data);
+    if (!json) {
+        printf("Error parsing JSON: %s\n", cJSON_GetErrorPtr());
+        free(data);
+        return;
+    }
+
+    cJSON *metrics = cJSON_GetObjectItem(json, "metrics");
+
+    if (cJSON_IsArray(metrics)) {
+        cJSON_DeleteItemFromObject(json, "metrics");
+        cJSON *new_metrics_array = cJSON_CreateArray();
+        for (int i = 0; i < new_metrics_count; i++) {
+            printf("New metric: %s\n", new_metrics[i]);
+            cJSON_AddItemToArray(new_metrics_array, cJSON_CreateString(new_metrics[i]));
+        }
+        cJSON_AddItemToObject(json, "metrics", new_metrics_array);
+    }
+
+    char *new_data = cJSON_Print(json);
+    file = fopen(filename, "w");
+    if (!file) {
+        perror("Unable to open config file");
+        return;
+    }
+    fprintf(file, "%s", new_data);
+    fclose(file);
+
+    cJSON_Delete(json);
+    free(data);
+    free(new_data);
+}
 // Arreglar el tema del background mode. Funciona, pero no como piden
 // Terminar el punto 6

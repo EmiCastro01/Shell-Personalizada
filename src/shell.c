@@ -84,6 +84,16 @@ cmd_t get_cmd(char **args)
         return STOP_MONITOR;
     else if (strcmp(args[0], "status_monitor") == 0)
         return STATUS_MONITOR;
+    else if (strcmp(args[0], "show_cpu_usage") == 0)
+        return SHOW_CPU_USAGE;
+    else if (strcmp(args[0], "show_mem_usage") == 0)
+        return SHOW_MEM_USAGE;
+    else if (strcmp(args[0], "show_disk_usage") == 0)
+        return SHOW_DISK_USAGE;
+    else if (strcmp(args[0], "show_net_usage") == 0)
+        return SHOW_NET_USAGE;
+    else if (strcmp(args[0], "show_proc_no") == 0)
+        return SHOW_PROC_NO;
     else
         return EXTERNAL;    // external program
 }
@@ -231,6 +241,36 @@ void run_cmd(cmd_t cmd, char **args, config_t configurations)
         case STATUS_MONITOR:
             printf("Checking monitor status...\n");
             check_and_print_monitor_status(monitor_pid);
+            break;
+        case SHOW_CPU_USAGE:
+           printf("config json updated.\n");
+            char *new_cpu_metric = "cpu_usage";
+            configurations.metrics[configurations.metrics_count] = new_cpu_metric;
+            update_config_json("../config.json", configurations.metrics, configurations.metrics_count + 1);
+            break;
+        case SHOW_MEM_USAGE:
+            printf("config json updated.\n");
+            char *new_mem_metric = "memory_usage";
+            configurations.metrics[configurations.metrics_count] = new_mem_metric;
+            update_config_json("../config.json", configurations.metrics, configurations.metrics_count + 1);
+            break;
+        case SHOW_DISK_USAGE:
+           printf("config json updated.\n");
+            char *new_IO_metric = "IO_time";
+            configurations.metrics[configurations.metrics_count] = new_IO_metric;
+            update_config_json("../config.json", configurations.metrics, configurations.metrics_count + 1);
+            break;  
+        case SHOW_NET_USAGE:
+            printf("config json updated.\n");
+            char *new_tx_metric = "net_TX";
+            configurations.metrics[configurations.metrics_count] = new_tx_metric;
+            update_config_json("../config.json", configurations.metrics, configurations.metrics_count + 1);
+            break;
+        case SHOW_PROC_NO:
+            printf("config json updated.\n");
+            char *new_proc_metric = "processes";
+            configurations.metrics[configurations.metrics_count] = new_proc_metric;
+            update_config_json("../config.json", configurations.metrics, configurations.metrics_count + 1);
             break;
         default:
             break;

@@ -59,6 +59,11 @@ typedef enum
   START_MONITOR,
   STOP_MONITOR,
   STATUS_MONITOR,
+  SHOW_CPU_USAGE,
+  SHOW_MEM_USAGE,
+  SHOW_DISK_USAGE,
+  SHOW_PROC_NO,
+  SHOW_NET_USAGE,
   EXTERNAL,
 } cmd_t;
 
@@ -132,6 +137,8 @@ extern void check_and_print_monitor_status(pid_t monitor_pid);
  * 
  */
 void load_config_json(const char *filename, config_t *configurations);
+
+void update_config_json(const char *filename, char **new_metrics, int new_metrics_count);
 
 extern int foreground_pid;
 
