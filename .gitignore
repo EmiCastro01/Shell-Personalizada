@@ -58,3 +58,6 @@ lib
 
 #testing
 test
+
+#venv 
+venv
