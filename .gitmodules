@@ -1,3 +1,6 @@
 [submodule "monitor"]
 	path = monitor
 	url = https://github.com/EmiCastro01/Monitoring-System.git
+[submodule "Monitoring-System"]
+	path = Monitoring-System
+	url = https://github.com/EmiCastro01/Monitoring-System.git
