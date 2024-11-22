@@ -1,4 +1,4 @@
 {
     "sampling_interval": 23,
-    "metrics": ["cpu_usage", "memory_usage"]
+    "metrics": ["cpu_usage", "memory_usage", "proccesses"]
 }
