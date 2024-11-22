@@ -6,10 +6,11 @@
 #define OCTAL_CLEAR "\033[H\033[J"
 
 #define MONITOR_PATH "../monitor/metrics"
-
+#define MAX_METRICS 10
 typedef struct {
   int sampling_interval;
-  char **metrics;
+  char *metrics[MAX_METRICS];
+  int metrics_count;
 } config_t;
 
 /**
