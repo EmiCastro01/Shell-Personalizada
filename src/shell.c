@@ -57,7 +57,7 @@ void run_shell(run_mode_struct_t run_mode, config_t configurations)
         if (args[0] != NULL)   // args[0] is the command
         {
             cmd = get_cmd(args);
-            run_cmd(cmd, args, configurations);
+            run_cmd(cmd, args, &configurations);
         }
     }
 

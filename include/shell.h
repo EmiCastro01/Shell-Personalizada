@@ -1,5 +1,6 @@
 #pragma once
 
+#include <sys/types.h>
 #define HOST_NAME "survivor@refugio:"
 #define TRUE 1
 #define MAX_LINE_COMMAND 256
@@ -86,7 +87,7 @@ cmd_t get_cmd(char **args);
  * @param cmd 
  * @param args 
  */
-void run_cmd(cmd_t cmd, char **args, config_t configurations);
+int run_cmd(cmd_t cmd, char **args, config_t *configurations);
 
 /**
  * @brief Check if the arguments are not null

@@ -1,4 +1,4 @@
-#!/home/emi/Escritorio/FACU/OS1/tp/so-i-24-chp2-EmiCastro01/venv/bin/python3
+#!/home/emi/Escritorio/FACU/trabajoPracticoSo/so-i-24-chp2-EmiCastro01/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
