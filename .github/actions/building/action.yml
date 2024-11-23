@@ -15,7 +15,8 @@ runs:
       shell: bash
       run: |
         conan profile detect --force
-        echo "settings.build_type=Debug" >> $(conan profile path default)
+        conan profile update settings.build_type=Debug default
+
         conan install . --build=missing --output-folder=build
         
 
