@@ -17,5 +17,6 @@ runs:
       run: |
         SRC_FOLDER=$(pwd)/src
 
+        mkdir -p build && cd build
         echo "Running command: cmake -DRUN_COVERAGE=1 .. && make -j2"
         cmake -DRUN_COVERAGE=1 -DENABLE_CJSON_TEST=OFF .. && make -j2
