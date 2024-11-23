@@ -15,7 +15,8 @@ runs:
       shell: bash
       run: |
         conan profile detect --force
-        conan install . --build=missing --output-folder=build --profile=debug
+        cp ~/.conan/profiles/default ~/.conan/profiles/debug && sed -i -e 's/Release/Debug/g' ~/.conan/profiles/debug
+        conan install . --build=missing --output-folder=build
         
 
     - name: Compile
