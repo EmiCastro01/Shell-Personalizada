@@ -15,6 +15,7 @@ runs:
       shell: bash
       run: |
         conan profile detect --force
+        conan profile update settings.build_type=Debug default
         conan install . --build=missing --output-folder=build
         
 
@@ -23,4 +24,4 @@ runs:
       run: |
         mkdir -p build && cd build
         echo "Running command: cmake -DRUN_COVERAGE=1 -DENABLE_CJSON_TEST=OFF .. && make -j2"
-        cmake -DRUN_COVERAGE=1 -DENABLE_CJSON_TEST=OFF .. && make -j2
+        cmake -DRUN_COVERAGE=1 .. && make -j2
