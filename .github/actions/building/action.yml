@@ -10,7 +10,7 @@ runs:
         sudo apt-get install python3-pip
         pip3 install conan
         conan profile detect --force
-        conan install . --output-folder=build --build=missing
+        conan install . --build=missing -if=build
 
     - name: Compile
       shell: bash
