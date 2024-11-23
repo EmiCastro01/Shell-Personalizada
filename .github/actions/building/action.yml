@@ -28,7 +28,8 @@ runs:
       run: |
         mkdir -p build && cd build
         echo "Running command: cmake -DRUN_COVERAGE=1 -DENABLE_CJSON_TEST=OFF .. && make -j2"
+        pwd
         ls 
         cmake  -DCMAKE_TOOLCHAIN_FILE=./conan_toolchain.cmake -DRUN_COVERAGE=1 -DCMAKE_BUILD_TYPE=Debug ..
-        make -j2
+        make -j$(nproc)
 

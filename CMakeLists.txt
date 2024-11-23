@@ -12,7 +12,7 @@ include(CTest)
 
 #flags for compiler
 set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_FLAGS_DEBUG "-g -00 -Wall -WConversion")
+set(CMAKE_C_FLAGS_DEBUG "-g -00 -Wall -Wconversion")
 
 
 #include headers
