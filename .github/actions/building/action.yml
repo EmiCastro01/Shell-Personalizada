@@ -18,7 +18,7 @@ runs:
         cp /home/runner/.conan2/profiles/default /home/runner/.conan2/profiles/debug
         sed -i 's/build_type=Release/build_type=Debug/g' ~/.conan2/profiles/debug
         cat ~/.conan2/profiles/debug
-        conan install . --build=missing --output-folder=build 
+        conan install . --build=missing --output-folder=build --profile=debug
 
 
         
