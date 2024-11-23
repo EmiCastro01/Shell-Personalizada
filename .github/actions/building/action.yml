@@ -15,7 +15,7 @@ runs:
       shell: bash
       run: |
         conan profile detect --force
-        cp /home/runner/.conan2/profiles/default /home/runner/.conan2/profiles/debug
+        cp ~/.conan2/profiles/default ~/.conan2/profiles/debug
         sed -i 's/build_type=Release/build_type=Debug/g' ~/.conan2/profiles/debug
         cat ~/.conan2/profiles/debug
         conan install . --build=missing --output-folder=build --profile=debug
@@ -28,6 +28,6 @@ runs:
       run: |
         mkdir -p build && cd build
         echo "Running command: cmake -DRUN_COVERAGE=1 -DENABLE_CJSON_TEST=OFF .. && make -j2"
-        cmake -DRUN_COVERAGE=1 -DCMAKE_BUILD_TYPE=Debug ..
+        cmake  -DCMAKE_TOOLCHAIN_FILE=./build/Release/generators/conan_toolchain.cmake -DRUN_COVERAGE=1 -DCMAKE_BUILD_TYPE=Debug ..
         make -j2
 
