@@ -17,7 +17,7 @@ runs:
         # -VV verbose output
         echo "hola"
         CTEST_COMMAND=$(ctest --test-dir build/tests --output-on-failure -VV 2> $CTEST_ERROR_FILE_FLAG 1>$ERROR_FILE_FLAG)
-
+        echo "hola"
         if [ -s $CTEST_ERROR_FILE_FLAG ]; then
           echo "Error: Unit Tests Failed"
           exit 1
