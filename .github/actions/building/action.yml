@@ -31,5 +31,5 @@ runs:
         cmake .. -DCMAKE_TOOLCHAIN_FILE=./conan_toolchain.cmake -DRUN_COVERAGE=1 -DCMAKE_BUILD_TYPE=Debug
         ls
         cat Makefile
-        make -j$(nproc)
+        make -j2
 
