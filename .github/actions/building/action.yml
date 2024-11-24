@@ -16,10 +16,10 @@ runs:
         sudo apt-get update
         sudo apt-get install -y libmicrohttpd-dev
 
-      - name: Configure and build 
-        run: |
-          cmake -S . -B build
-          cmake --build build
+    - name: Configure and build 
+      run: |
+        cmake -S . -B build
+        cmake --build build
 
     - name: Install Conan dependencies
       shell: bash
