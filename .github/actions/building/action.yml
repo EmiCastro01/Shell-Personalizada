@@ -10,6 +10,16 @@ runs:
         sudo apt-get update
         sudo apt-get install -y python3-pip 
         pip3 install conan
+    - name: Install Monitor Dependencies
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libmicrohttpd-dev
+
+      - name: Configure and build 
+        run: |
+          cmake -S . -B build
+          cmake --build build
 
     - name: Install Conan dependencies
       shell: bash
