@@ -53,7 +53,7 @@ bg_mode_t check_bg(char** args)
     int arg_index = 0;
     while (args[arg_index] != NULL)
     {
-        int len = strlen(args[arg_index]);
+        size_t len = strlen(args[arg_index]);
         if (len > 0 && args[arg_index][len - 1] == '&')
         {
             background = BACKGROUND_MODE;

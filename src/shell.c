@@ -219,7 +219,7 @@ void execute_process(char** args, int input_fd, int output_fd, bg_mode_t bg_mode
  */
 int run_cmd(cmd_t cmd, char** args, config_t* configurations)
 {
-    bg_mode_t background = check_bg(args);
+    check_bg(args);
 
     if (cmd != EXTERNAL)
     {
@@ -442,7 +442,7 @@ void load_config_json(const char* filename, config_t* configurations)
     }
 
     fseek(file, 0, SEEK_END);
-    long length = ftell(file);
+    long unsigned length = ftell(file);
     fseek(file, 0, SEEK_SET);
 
     char* data = (char*)malloc(length + 1);
