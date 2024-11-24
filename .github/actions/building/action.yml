@@ -30,6 +30,6 @@ runs:
         cd build
         echo "Running command: cmake -DRUN_COVERAGE=1  .. && make -j2"
         ls
-        cmake .. -DCMAKE_TOOLCHAIN_FILE=./build/build/Release/generators/conan_toolchain.cmake -DRUN_COVERAGE=1 -DCMAKE_BUILD_TYPE=Debug
+        cmake .. -DCMAKE_TOOLCHAIN_FILE=./build/Release/generators/conan_toolchain.cmake -DRUN_COVERAGE=1 -DCMAKE_BUILD_TYPE=Debug
         make -j2
 
