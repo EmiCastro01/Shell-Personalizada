@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
 
+project(
+  test_shell
+  VERSION 1.0.0
+  DESCRIPTION "Test for shell project"
+  LANGUAGES C
+)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fprofile-arcs -ftest-coverage --coverage" )

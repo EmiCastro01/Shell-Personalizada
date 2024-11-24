@@ -20,7 +20,7 @@
 /**
  * monitor subdirectory path
  */
-#define MONITOR_PATH "../monitor/metrics"
+#define MONITOR_PATH "./monitor/monitoring_project"
 /**
  * max metrics
  */

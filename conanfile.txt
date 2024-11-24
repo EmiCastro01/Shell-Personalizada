@@ -6,3 +6,5 @@ unity/2.6.0
 CMakeDeps
 CMakeToolchain
 
+[layout]
+cmake_layout
