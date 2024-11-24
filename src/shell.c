@@ -181,7 +181,7 @@ void execute_process(char** args, int input_fd, int output_fd, bg_mode_t bg_mode
         if (execvp(args[0], args) == -1)
         {
             perror("Error");
-            printf(getenv("PATH"));
+            printf("%s", getenv("PATH")); // Usa printf correctamente
             exit(EXIT_FAILURE);
         }
     }
@@ -200,7 +200,7 @@ void execute_process(char** args, int input_fd, int output_fd, bg_mode_t bg_mode
         else
         {
             printf("Process running in background with PID %d\n", pid);
-            if (args[0] == MONITOR_PATH)
+            if (strcmp(args[0], MONITOR_PATH) == 0) // Usa strcmp para comparar cadenas
             {
                 monitor_pid = pid;
             }

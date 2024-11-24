@@ -70,6 +70,7 @@ bg_mode_t check_bg(char** args)
     }
     return background;
 }
+
 /**
  * @brief Signal handler for SIGINT
  *
