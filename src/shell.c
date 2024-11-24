@@ -442,13 +442,14 @@ void load_config_json(const char* filename, config_t* configurations)
     }
 
     fseek(file, 0, SEEK_END);
-    long unsigned length = ftell(file);
+    long length = ftell(file);
     fseek(file, 0, SEEK_SET);
 
-    char* data = (char*)malloc(length + 1);
-    fread(data, 1, length, file);
+    size_t size = (size_t)length;
+    char* data = (char*)malloc(size + 1);
+    fread(data, 1, size, file);
     fclose(file);
-    data[length] = '\0';
+    data[size] = '\0';
 
     cJSON* json = cJSON_Parse(data);
     if (!json)
@@ -469,9 +470,9 @@ void load_config_json(const char* filename, config_t* configurations)
 
     if (cJSON_IsArray(metrics))
     {
-        int size = cJSON_GetArraySize(metrics);
-        configurations->metrics_count = size;
-        for (int i = 0; i < size; i++)
+        int size2 = cJSON_GetArraySize(metrics);
+        configurations->metrics_count = size2;
+        for (int i = 0; i < size2; i++)
         {
             cJSON* metric = cJSON_GetArrayItem(metrics, i);
             if (cJSON_IsString(metric))
@@ -506,10 +507,11 @@ void update_config_json(const char* filename, char** new_metrics, int new_metric
     long length = ftell(file);
     fseek(file, 0, SEEK_SET);
 
-    char* data = (char*)malloc(length + 1);
-    fread(data, 1, length, file);
+    size_t size = (size_t)length;
+    char* data = (char*)malloc(size + 1);
+    fread(data, 1, size, file);
     fclose(file);
-    data[length] = '\0';
+    data[size] = '\0';
 
     cJSON* json = cJSON_Parse(data);
     if (!json)
