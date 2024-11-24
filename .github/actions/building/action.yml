@@ -10,7 +10,8 @@ runs:
         sudo apt-get update
         sudo apt-get install -y python3-pip 
         pip3 install conan
-        
+        sudo apt-get install -y libmicrohttpd-dev
+
     - name: Install Conan dependencies
       shell: bash
       run: |
