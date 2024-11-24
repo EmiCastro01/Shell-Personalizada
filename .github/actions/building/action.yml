@@ -27,6 +27,8 @@ runs:
     - name: Compile
       shell: bash
       run: |
+        ls
+        echo "------------------"
         cd build
         echo "Running command: cmake -DRUN_COVERAGE=1  .. && make -j2"
         ls
