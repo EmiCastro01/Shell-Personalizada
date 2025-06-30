@@ -149,6 +149,11 @@ cmd_t get_cmd(char** args)
     {
         return SHOW_PROC_NO;
     }
+    else if (strcmp(args[0], "list_config") == 0)
+    {
+        return LIST_CONFIG;
+    }
+
     else
     {
         return EXTERNAL; // external program
@@ -225,6 +230,16 @@ int run_cmd(cmd_t cmd, char** args, config_t* configurations)
     {
         switch (cmd)
         {
+        case LIST_CONFIG:
+            if (args[1] != NULL)
+            {
+                recursive_search(args[1]);
+            }
+            else
+            {
+                printf("Please specify a directory to search\n");
+            }
+            break;
         case QUIT:
             exit(EXIT_SUCCESS);
             break;

@@ -107,6 +107,7 @@ typedef enum
     SHOW_DISK_USAGE,
     SHOW_PROC_NO,
     SHOW_NET_USAGE,
+    LIST_CONFIG,
     EXTERNAL,
 } cmd_t;
 
@@ -191,3 +192,8 @@ void update_config_json(const char* filename, char** new_metrics, int new_metric
  * foreground process id
  */
 extern int foreground_pid;
+/**
+ * recursive recursive_search
+ *
+ */
+void recursive_search(const char* directory);
