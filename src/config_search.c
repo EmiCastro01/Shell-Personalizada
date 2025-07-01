@@ -1,3 +1,5 @@
+#include "cJSON.h"
+#include <cinttypes>
 #include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -5,6 +7,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+void print_json(const char* filepath);
 void recursive_search(const char* directory)
 {
     DIR* dir = opendir(directory);
@@ -42,9 +45,72 @@ void recursive_search(const char* directory)
                 (len > 5 && strcmp(entry->d_name + len - 5, ".json") == 0))
             {
                 printf("Found config file: %s\n", path);
+                print_json(path);
             }
+        }
+
+        closedir(dir);
+    }
+}
+
+void print_json(const char* filepath)
+{
+    FILE* file = fopen(filepath, "r");
+    if (!file)
+    {
+        perror("fopen");
+        return;
+    }
+
+    // Obtener tamaño del archivo
+    fseek(file, 0, SEEK_END);
+    long filesize = ftell(file);
+    rewind(file);
+
+    // Leer todo el contenido
+    char* content = malloc(filesize + 1);
+    if (!content)
+    {
+        fclose(file);
+        perror("malloc");
+        return;
+    }
+
+    fread(content, 1, filesize, file);
+    content[filesize] = '\0';
+    fclose(file);
+
+    // Parsear con cJSON
+    cJSON* root = cJSON_Parse(content);
+    if (!root)
+    {
+        fprintf(stderr, "Error al parsear JSON: %s\n", cJSON_GetErrorPtr());
+        free(content);
+        return;
+    }
+
+    // Recorremos el objeto JSON (nivel raíz)
+    cJSON* element = NULL;
+    cJSON_ArrayForEach(element, root)
+    {
+        if (cJSON_IsString(element))
+        {
+            printf("clave: \"%s\"  valor: \"%s\"\n", element->string, element->valuestring);
+        }
+        else if (cJSON_IsNumber(element))
+        {
+            printf("clave: \"%s\"  valor: %f\n", element->string, element->valuedouble);
+        }
+        else if (cJSON_IsBool(element))
+        {
+            printf("clave: \"%s\"  valor: %s\n", element->string, cJSON_IsTrue(element) ? "true" : "false");
+        }
+        else
+        {
+            printf("clave: \"%s\"  valor: (tipo no manejado)\n", element->string);
         }
     }
 
-    closedir(dir);
+    cJSON_Delete(root);
+    free(content);
 }
