@@ -34,11 +34,10 @@ void recursive_search(const char* directory)
 
         if (S_ISDIR(statbuf.st_mode))
         {
-            recursive_search(path); // Directorio: llamada recursiva
+            recursive_search(path);
         }
         else if (S_ISREG(statbuf.st_mode))
         {
-            // Archivo regular: verificar extensión
             size_t len = strlen(entry->d_name);
             if ((len > 7 && strcmp(entry->d_name + len - 7, ".config") == 0) ||
                 (len > 5 && strcmp(entry->d_name + len - 5, ".json") == 0))
@@ -47,9 +46,9 @@ void recursive_search(const char* directory)
                 print_json(path);
             }
         }
-
-        closedir(dir);
     }
+
+    closedir(dir); // <-- Aquí, fuera del while
 }
 
 void print_json(const char* filepath)
