@@ -1,3 +1,5 @@
+# shell-personalizada/CMakeLists.txt
+
 cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
 
 project(
@@ -16,18 +18,20 @@ set(CMAKE_C_FLAGS_DEBUG "-g -O0 -Wall -Wconversion")
 # include headers
 include_directories(include)
 
-# find dependencies
+# dependencies
 find_package(cJSON REQUIRED)
-# find_package(Unity REQUIRED)
 
 add_subdirectory(monitor)
 
-# Ensure the main target depends on the monitor build add the executable  ->
-# .exe or binary
-add_executable(${PROJECT_NAME} src/main.c src/shell.c src/util.c
-                               src/config_search.c)
+# 🔧 Crear la LIBRERÍA REUTILIZABLE llamada shell_lib
+add_library(shell_lib STATIC src/shell.c src/util.c src/config_search.c)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE cjson::cjson)
+target_include_directories(shell_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(shell_lib PRIVATE cjson::cjson)
+
+# 🔧 El ejecutable de shell (si querés seguir teniéndolo como TP2)
+add_executable(ShellProject src/main.c)
+target_link_libraries(ShellProject PRIVATE shell_lib)
 
 if(RUN_COVERAGE EQUAL 1)
   message("run coverage")
