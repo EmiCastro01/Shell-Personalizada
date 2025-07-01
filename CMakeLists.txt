@@ -24,7 +24,8 @@ add_subdirectory(monitor)
 
 # Ensure the main target depends on the monitor build add the executable  ->
 # .exe or binary
-add_executable(${PROJECT_NAME} src/main.c src/shell.c src/util.c)
+add_executable(${PROJECT_NAME} src/main.c src/shell.c src/util.c
+                               src/config_search.c)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE cjson::cjson)
 
